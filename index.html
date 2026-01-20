@@ -10,87 +10,96 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    colors: {
+                        paper: '#fdfbf7',
+                        ink: '#2d2d2d',
+                        'ink-light': '#4a4a4a',
+                        muted: '#e5e0d8',
+                        accent: '#ff4d4d', // Correction Marker Red
+                        'accent-hover': '#ff3333',
+                        secondary: '#2d5da1', // Blue Ballpoint
+                        highlight: '#fff9c4', // Post-it Yellow
+                    },
+                    fontFamily: {
+                        sans: ['"Patrick Hand"', 'cursive', 'sans-serif'],
+                        heading: ['"Kalam"', 'cursive', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px #2d2d2d',
+                        'hard-sm': '2px 2px 0px 0px #2d2d2d',
+                        'hard-lg': '8px 8px 0px 0px #2d2d2d',
+                        'hard-xl': '12px 12px 0px 0px #2d2d2d',
+                    },
+                    borderRadius: {
+                        'wobbly': '255px 15px 225px 15px / 15px 225px 15px 255px',
+                        'wobbly-md': '20px 225px 20px 225px / 225px 20px 225px 20px',
+                        'wobbly-sm': '255px 25px 225px 25px / 25px 225px 25px 255px',
+                    },
                     animation: {
-                        'shimmer': 'shimmer 2s linear infinite',
+                        'jiggle': 'jiggle 3s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        shimmer: {
-                            '0%': { transform: 'translateX(-100%)' },
-                            '100%': { transform: 'translateX(100%)' }
+                        jiggle: {
+                            '0%, 100%': { transform: 'rotate(-1deg)' },
+                            '50%': { transform: 'rotate(1deg)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
                         }
                     }
                 }
-            },
-            plugins: [
-                function({ addUtilities }) {
-                    const newUtilities = {
-                        '.perspective-1000': {
-                            'perspective': '1000px',
-                        },
-                        '.transform-style-3d': {
-                            'transform-style': 'preserve-3d',
-                        },
-                        '.backface-hidden': {
-                            'backface-visibility': 'hidden',
-                        },
-                    }
-                    addUtilities(newUtilities)
-                }
-            ]
+            }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #a30000 0%, #ff4d4d 100%);
-            background-attachment: fixed;
+            font-family: 'Patrick Hand', cursive;
+            background-color: #fdfbf7;
+            background-image: radial-gradient(#e5e0d8 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: #2d2d2d;
             min-height: 100vh;
         }
-        .pattern-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(rgba(255, 215, 0, 0.15) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: -1;
+        
+        /* Custom Scrollbar for that sketchy feel */
+        ::-webkit-scrollbar {
+            width: 12px;
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #ffd700 0%, #ffec8b 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        ::-webkit-scrollbar-track {
+            background: #fdfbf7;
+            border-left: 2px solid #2d2d2d;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        ::-webkit-scrollbar-thumb {
+            background: #2d2d2d;
+            border: 2px solid #fdfbf7;
+            border-radius: 20px;
         }
-        .festive-card {
-            background: linear-gradient(135deg, #fff9f0 0%, #fff 100%);
-            border: 2px solid #ffd700;
-            box-shadow: 0 10px 25px -5px rgba(255, 215, 0, 0.3);
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff4d4d;
+        }
+
+        .hand-border {
+            border: 2px solid #2d2d2d;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
         }
     </style>
 <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
     "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "canvas-confetti": "https://esm.sh/canvas-confetti@^1.9.3"
   }
 }
 </script>
 </head>
 <body>
-    <div class="pattern-overlay"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>

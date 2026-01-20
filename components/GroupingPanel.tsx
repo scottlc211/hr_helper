@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { LayoutGrid, Users, Settings2, RefreshCw, Wand2, FileDown, Copy, Check } from 'lucide-react';
+import { LayoutGrid, Settings2, RefreshCw, Wand2, FileDown, Copy, Check } from 'lucide-react';
 import { Participant, Group } from '../types';
 import { generateTeamNames } from '../services/geminiService';
 
@@ -84,41 +83,51 @@ const GroupingPanel: React.FC<Props> = ({ participants }) => {
     document.body.removeChild(link);
   };
 
+  const stickyColors = [
+    'bg-highlight', // Yellow
+    'bg-rose-100', // Pink
+    'bg-blue-100', // Blue
+    'bg-green-100', // Green
+    'bg-orange-100', // Orange
+  ];
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-left-2 pb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-dashed border-ink/20 pb-6">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 flex items-center space-x-2">
-            <LayoutGrid className="text-indigo-600" />
-            <span>智能自动分组</span>
+          <h2 className="text-3xl font-heading font-bold text-ink flex items-center space-x-2 transform -rotate-1">
+            <div className="bg-highlight text-ink p-2 border-2 border-ink rounded-wobbly-sm shadow-hard-sm">
+                <LayoutGrid className="w-6 h-6" strokeWidth={2.5} />
+            </div>
+            <span>Smart Grouping</span>
           </h2>
-          <p className="text-slate-500 mt-1">根据设定的人数自动打乱并分配小组</p>
+          <p className="text-ink-light font-bold mt-2 ml-2">Automatically shuffle and assign teams</p>
         </div>
 
-        <div className="flex items-center space-x-4 bg-slate-50 border border-slate-100 p-2 rounded-2xl">
-          <div className="flex items-center space-x-3 px-4 py-2 bg-white rounded-xl shadow-sm border border-slate-100">
-             <Settings2 className="w-4 h-4 text-slate-400" />
-             <label className="text-sm font-bold text-slate-600 whitespace-nowrap">每组人数:</label>
+        <div className="flex items-center space-x-4 bg-paper border-2 border-ink p-3 rounded-wobbly shadow-hard-sm transform rotate-1">
+          <div className="flex items-center space-x-3 px-4 py-2 bg-white rounded-wobbly-sm border-2 border-ink">
+             <Settings2 className="w-4 h-4 text-ink" />
+             <label className="text-sm font-bold text-ink whitespace-nowrap">Group Size:</label>
              <input 
                type="number" 
                min="1" 
                max={participants.length}
                value={groupSize} 
                onChange={(e) => setGroupSize(Number(e.target.value))}
-               className="w-12 text-center font-bold text-indigo-600 focus:outline-none"
+               className="w-12 text-center font-bold text-secondary focus:outline-none bg-transparent"
              />
           </div>
           <button
             onClick={performGrouping}
             disabled={isGenerating || participants.length < 2}
-            className="bg-indigo-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 disabled:opacity-50 transition-all flex items-center space-x-2 shadow-lg shadow-indigo-100"
+            className="bg-secondary text-white border-2 border-ink px-6 py-2.5 rounded-wobbly-sm font-bold text-sm hover:bg-secondary/90 disabled:opacity-50 transition-all flex items-center space-x-2 shadow-hard-sm hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px]"
           >
             {isGenerating ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
             ) : (
               <Wand2 className="w-4 h-4" />
             )}
-            <span>{isGenerating ? '正在生成...' : '立即分组'}</span>
+            <span>{isGenerating ? 'Generating...' : 'Group Now'}</span>
           </button>
         </div>
       </div>
@@ -126,43 +135,51 @@ const GroupingPanel: React.FC<Props> = ({ participants }) => {
       {groups.length > 0 ? (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">分组结果预览</h3>
+             <h3 className="text-xl font-heading font-bold text-ink uppercase tracking-widest transform rotate-1">Results Preview</h3>
              <div className="flex items-center space-x-4">
                <button 
                  onClick={copyToClipboard}
-                 className="flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors"
+                 className="flex items-center space-x-2 text-sm font-bold text-ink hover:text-secondary transition-colors border-2 border-transparent hover:border-ink px-2 py-1 rounded-wobbly-sm"
                >
-                 {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                 <span>{copied ? '已复制' : '复制文本'}</span>
+                 {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+                 <span>{copied ? 'Copied!' : 'Copy Text'}</span>
                </button>
                <button 
                  onClick={downloadCSV}
-                 className="flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors"
+                 className="flex items-center space-x-2 text-sm font-bold text-ink hover:text-secondary transition-colors border-2 border-transparent hover:border-ink px-2 py-1 rounded-wobbly-sm"
                >
                  <FileDown className="w-4 h-4" />
-                 <span>下载 CSV</span>
+                 <span>Download CSV</span>
                </button>
              </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {groups.map((group, gIdx) => (
               <div 
                 key={group.id} 
-                className="bg-white border-2 border-slate-100 rounded-3xl p-6 hover:border-indigo-200 transition-all hover:shadow-xl hover:shadow-indigo-50/50 group animate-in zoom-in-95 duration-300"
-                style={{ animationDelay: `${gIdx * 100}ms` }}
+                className={`border-2 border-ink rounded-wobbly p-6 hover:scale-105 transition-all shadow-hard hover:shadow-hard-lg group animate-in zoom-in-95 duration-300 relative
+                    ${stickyColors[gIdx % stickyColors.length]}
+                `}
+                style={{ 
+                    animationDelay: `${gIdx * 100}ms`,
+                    transform: `rotate(${gIdx % 2 === 0 ? '1deg' : '-1deg'})`
+                }}
               >
-                <div className="flex items-center justify-between mb-4">
-                   <h4 className="text-lg font-black text-slate-800 truncate pr-2">{group.name}</h4>
-                   <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase rounded-full shrink-0">
-                     {group.members.length} 人
+                {/* Tape effect */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-white/40 backdrop-blur-sm transform -rotate-1 border border-white/50 shadow-sm"></div>
+
+                <div className="flex items-center justify-between mb-4 mt-2">
+                   <h4 className="text-xl font-heading font-bold text-ink truncate pr-2">{group.name}</h4>
+                   <span className="px-2 py-1 bg-white border-2 border-ink text-ink text-xs font-black uppercase rounded-full shrink-0 transform rotate-2">
+                     {group.members.length}
                    </span>
                 </div>
                 <ul className="space-y-2">
                   {group.members.map((member, mIdx) => (
                     <li key={member.id} className="flex items-center space-x-3 group/item">
-                       <div className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover/item:bg-indigo-400 transition-colors" />
-                       <span className="text-slate-600 text-sm font-medium">{member.name}</span>
+                       <div className="w-2 h-2 rounded-full border border-ink bg-white group-hover/item:bg-accent transition-colors" />
+                       <span className="text-ink text-lg font-bold">{member.name}</span>
                     </li>
                   ))}
                 </ul>
@@ -171,15 +188,15 @@ const GroupingPanel: React.FC<Props> = ({ participants }) => {
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center py-20 border-2 border-dashed border-slate-100 rounded-3xl bg-slate-50/30">
-          <div className="bg-white p-4 rounded-3xl shadow-sm mb-4">
-             <LayoutGrid className="w-12 h-12 text-slate-200" />
+        <div className="flex-1 flex flex-col items-center justify-center py-24 border-4 border-dashed border-muted rounded-wobbly bg-white/50">
+          <div className="bg-white p-6 rounded-full border-2 border-ink shadow-hard mb-6 transform -rotate-3">
+             <LayoutGrid className="w-12 h-12 text-ink" strokeWidth={1.5} />
           </div>
-          <h3 className="text-slate-500 font-bold">准备好开始分组了吗？</h3>
-          <p className="text-slate-400 text-sm mt-1">设置组人数并点击“立即分组”</p>
+          <h3 className="text-2xl font-heading font-bold text-ink">Ready to group?</h3>
+          <p className="text-ink-light font-bold mt-2">Set group size and click "Group Now"</p>
           {participants.length < 2 && (
-             <div className="mt-4 px-4 py-2 bg-rose-50 text-rose-500 rounded-xl text-xs font-bold border border-rose-100">
-                请先导入至少 2 名参与者。
+             <div className="mt-6 px-6 py-3 bg-accent text-white rounded-wobbly-sm text-sm font-bold border-2 border-ink shadow-hard-sm transform rotate-1 animate-pulse">
+                Please add at least 2 participants first.
              </div>
           )}
         </div>

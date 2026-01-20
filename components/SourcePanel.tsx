@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-import { Plus, Trash2, ListChecks, FileSpreadsheet, Users, UserPlus, AlertCircle, Sparkles } from 'lucide-react';
+import { Trash2, ListChecks, FileSpreadsheet, Users, UserPlus, AlertCircle, Sparkles } from 'lucide-react';
 import { Participant } from '../types';
 
 interface Props {
@@ -18,7 +17,6 @@ const DUMMY_NAMES = [
 const SourcePanel: React.FC<Props> = ({ participants, onUpdate }) => {
   const [inputText, setInputText] = useState('');
 
-  // 计算姓名出现的次数，用于标记重复
   const nameCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     participants.forEach(p => {
@@ -83,45 +81,50 @@ const SourcePanel: React.FC<Props> = ({ participants, onUpdate }) => {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2">
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start border-b-2 border-dashed border-ink/20 pb-6">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 flex items-center space-x-2">
-            <ListChecks className="text-indigo-600" />
-            <span>名单导入与管理</span>
+          <h2 className="text-3xl font-heading font-bold text-ink flex items-center space-x-2 transform -rotate-1">
+            <div className="bg-secondary text-white p-2 border-2 border-ink rounded-wobbly-sm shadow-hard-sm">
+                <ListChecks className="w-6 h-6" strokeWidth={2.5} />
+            </div>
+            <span>Manage List</span>
           </h2>
-          <p className="text-slate-500 mt-1">上传 CSV 文件或直接粘贴姓名列表</p>
+          <p className="text-ink-light font-bold mt-2 ml-2">Import CSV or paste names directly</p>
         </div>
         <button
           onClick={handleLoadDummy}
-          className="flex items-center space-x-2 text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-2 rounded-xl hover:bg-indigo-100 transition-colors"
+          className="flex items-center space-x-2 text-sm font-bold text-ink bg-highlight border-2 border-ink px-4 py-2 rounded-wobbly-sm hover:bg-white transition-all shadow-hard-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transform rotate-1"
         >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>加载模拟数据</span>
+          <Sparkles className="w-4 h-4" />
+          <span>Load Demo Data</span>
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="space-y-4">
-          <div className="relative">
+          <div className="relative group">
+            <div className="absolute -top-3 left-4 bg-white px-2 font-heading font-bold text-ink z-10 border-2 border-ink rounded-md transform -rotate-2">
+                Paste Names Here
+            </div>
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="在此粘贴姓名... (使用换行或逗号分隔)"
-              className="w-full h-64 p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50/50 transition-all outline-none text-slate-700 resize-none font-medium"
+              placeholder="Enter names here... (one per line)"
+              className="w-full h-80 p-6 rounded-wobbly border-2 border-ink bg-paper focus:border-secondary focus:ring-0 transition-all outline-none text-ink resize-none font-bold text-lg shadow-hard-sm"
             />
-            <div className="absolute bottom-4 right-4 flex space-x-2">
-              <label className="cursor-pointer bg-white border border-slate-200 px-3 py-2 rounded-xl text-slate-600 text-sm font-semibold hover:bg-slate-50 transition-colors flex items-center space-x-2 shadow-sm">
+            <div className="absolute bottom-4 right-4 flex space-x-3 z-10">
+              <label className="cursor-pointer bg-white border-2 border-ink px-4 py-2 rounded-wobbly-sm text-ink text-sm font-bold hover:bg-muted transition-all flex items-center space-x-2 shadow-hard-sm hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px]">
                 <FileSpreadsheet className="w-4 h-4" />
-                <span>上传 CSV</span>
+                <span>CSV</span>
                 <input type="file" accept=".csv,.txt" onChange={handleFileUpload} className="hidden" />
               </label>
               <button
                 onClick={handleAddNames}
                 disabled={!inputText.trim()}
-                className="bg-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md shadow-indigo-100 flex items-center space-x-2"
+                className="bg-secondary text-white border-2 border-ink px-6 py-2 rounded-wobbly-sm text-sm font-bold hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-hard-sm hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] flex items-center space-x-2"
               >
                 <UserPlus className="w-4 h-4" />
-                <span>添加到列表</span>
+                <span>Add Names</span>
               </button>
             </div>
           </div>
@@ -130,25 +133,25 @@ const SourcePanel: React.FC<Props> = ({ participants, onUpdate }) => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">当前名单</h3>
-              <span className="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-600 rounded-full">{participants.length} 人</span>
+              <h3 className="text-xl font-heading font-bold text-ink uppercase tracking-wider transform rotate-1">Current List</h3>
+              <span className="text-sm font-bold px-3 py-1 bg-ink text-white rounded-wobbly-sm transform -rotate-2 border-2 border-transparent">{participants.length}</span>
             </div>
             {duplicateCount > 0 && (
               <button
                 onClick={handleRemoveDuplicates}
-                className="flex items-center space-x-1 text-xs font-bold text-rose-500 bg-rose-50 px-3 py-1 rounded-lg border border-rose-100 hover:bg-rose-100 transition-colors animate-pulse"
+                className="flex items-center space-x-1 text-xs font-bold text-white bg-accent px-3 py-1.5 rounded-wobbly-sm border-2 border-ink hover:bg-accent-hover transition-all animate-jiggle shadow-hard-sm"
               >
                 <AlertCircle className="w-3.5 h-3.5" />
-                <span>移除 {duplicateCount} 个重复项</span>
+                <span>Fix {duplicateCount} Duplicates</span>
               </button>
             )}
           </div>
           
-          <div className="h-64 overflow-y-auto pr-2 custom-scrollbar space-y-2">
+          <div className="h-80 overflow-y-auto pr-2 custom-scrollbar space-y-3 p-2 border-2 border-ink rounded-wobbly bg-white shadow-inner">
             {participants.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl text-slate-400">
-                <Users className="w-10 h-10 mb-2 opacity-20" />
-                <p className="text-sm">名单为空</p>
+              <div className="h-full flex flex-col items-center justify-center text-ink-light opacity-50">
+                <Users className="w-12 h-12 mb-2" strokeWidth={1.5} />
+                <p className="text-lg font-heading">List is empty...</p>
               </div>
             ) : (
               participants.map((p, idx) => {
@@ -156,24 +159,22 @@ const SourcePanel: React.FC<Props> = ({ participants, onUpdate }) => {
                 return (
                   <div 
                     key={p.id} 
-                    className={`flex items-center justify-between px-4 py-2 border rounded-xl transition-all group ${
-                      isDuplicate 
-                      ? 'bg-rose-50 border-rose-100' 
-                      : 'bg-slate-50 border-slate-100 hover:border-indigo-200'
+                    className={`flex items-center justify-between px-4 py-3 border-b-2 border-dashed border-muted last:border-0 group hover:bg-paper transition-colors ${
+                      isDuplicate ? 'bg-red-50' : ''
                     }`}
                   >
-                    <span className="text-sm font-medium text-slate-700 flex items-center space-x-3">
-                      <span className="text-slate-300 font-mono text-xs w-5">{idx + 1}.</span>
-                      <span className={isDuplicate ? 'text-rose-700' : ''}>{p.name}</span>
+                    <span className="text-lg font-bold text-ink flex items-center space-x-3">
+                      <span className="text-ink-light/50 font-heading w-6">{idx + 1}.</span>
+                      <span className={isDuplicate ? 'text-accent decoration-wavy underline' : ''}>{p.name}</span>
                       {isDuplicate && (
-                        <span className="text-[10px] bg-rose-200 text-rose-700 px-1.5 py-0.5 rounded font-bold uppercase">重复</span>
+                        <span className="text-[10px] bg-accent text-white px-1.5 py-0.5 rounded border border-ink font-bold uppercase transform -rotate-2">Duplicate</span>
                       )}
                     </span>
                     <button 
                       onClick={() => removeParticipant(p.id)}
-                      className="p-1 text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                      className="p-1 text-ink-light hover:text-accent transition-colors opacity-0 group-hover:opacity-100 transform hover:scale-110"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
                 );
