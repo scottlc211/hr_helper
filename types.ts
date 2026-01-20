@@ -19,5 +19,5 @@ export enum AppTab {
 export interface DrawWinner {
   id: string;
   name: string;
-  timestamp: number;
+  timestamp: number; 
 }
