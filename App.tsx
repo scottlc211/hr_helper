@@ -47,28 +47,28 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 px-6 py-4">
+      <header className="sticky top-0 z-30 px-6 py-4 backdrop-blur-sm bg-white/10 border-b border-white/20">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="bg-indigo-600 p-2 rounded-xl">
+            <div className="bg-gradient-to-br from-amber-400 to-orange-500 p-2 rounded-xl shadow-lg shadow-orange-500/20">
               <Sparkles className="text-white w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">HR Event Toolbox</h1>
-              <p className="text-xs text-slate-500 font-medium">Lucky Draw & Smart Grouping</p>
+              <h1 className="text-xl font-bold text-white drop-shadow-md">Annual Meeting 2025</h1>
+              <p className="text-xs text-orange-100 font-medium">Lucky Draw & Smart Grouping</p>
             </div>
           </div>
 
           <div className="flex items-center space-x-2 text-sm">
-            <span className="px-3 py-1 bg-slate-100 rounded-full text-slate-600 font-semibold">
+            <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-white font-semibold border border-white/30 shadow-sm">
               {participants.length} Participants
             </span>
             {participants.length > 0 && (
               <button 
                 onClick={handleClearAll}
-                className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                className="p-2 text-white/70 hover:text-white hover:bg-white/20 rounded-lg transition-all"
                 title="Clear All"
               >
                 <Trash2 className="w-4 h-4" />
@@ -86,45 +86,45 @@ const App: React.FC = () => {
             onClick={() => setActiveTab(AppTab.Source)}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
               activeTab === AppTab.Source 
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 font-semibold' 
-                : 'text-slate-600 hover:bg-slate-200'
+                ? 'bg-gradient-to-r from-amber-100 to-white text-amber-800 shadow-lg font-bold border-l-4 border-amber-500' 
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
             }`}
           >
             <Users className="w-5 h-5" />
             <span>Manage List</span>
-            {activeTab === AppTab.Source && <ChevronRight className="w-4 h-4 ml-auto opacity-50" />}
+            {activeTab === AppTab.Source && <ChevronRight className="w-4 h-4 ml-auto text-amber-500" />}
           </button>
 
           <button
             onClick={() => setActiveTab(AppTab.LuckyDraw)}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
               activeTab === AppTab.LuckyDraw 
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 font-semibold' 
-                : 'text-slate-600 hover:bg-slate-200'
+                ? 'bg-gradient-to-r from-amber-100 to-white text-amber-800 shadow-lg font-bold border-l-4 border-amber-500' 
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
             }`}
           >
             <Trophy className="w-5 h-5" />
             <span>Lucky Draw</span>
-            {activeTab === AppTab.LuckyDraw && <ChevronRight className="w-4 h-4 ml-auto opacity-50" />}
+            {activeTab === AppTab.LuckyDraw && <ChevronRight className="w-4 h-4 ml-auto text-amber-500" />}
           </button>
 
           <button
             onClick={() => setActiveTab(AppTab.Grouping)}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
               activeTab === AppTab.Grouping 
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 font-semibold' 
-                : 'text-slate-600 hover:bg-slate-200'
+                ? 'bg-gradient-to-r from-amber-100 to-white text-amber-800 shadow-lg font-bold border-l-4 border-amber-500' 
+                : 'text-white/80 hover:bg-white/10 hover:text-white'
             }`}
           >
             <LayoutGrid className="w-5 h-5" />
             <span>Auto Grouping</span>
-            {activeTab === AppTab.Grouping && <ChevronRight className="w-4 h-4 ml-auto opacity-50" />}
+            {activeTab === AppTab.Grouping && <ChevronRight className="w-4 h-4 ml-auto text-amber-500" />}
           </button>
         </nav>
 
         {/* Dynamic Panels */}
         <div className="flex-1 min-w-0">
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 min-h-[600px] flex flex-col">
+          <div className="glass-card rounded-3xl p-6 md:p-8 min-h-[600px] flex flex-col">
             {activeTab === AppTab.Source && (
               <SourcePanel participants={participants} onUpdate={handleUpdateParticipants} />
             )}
@@ -138,9 +138,9 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      <footer className="bg-white border-t border-slate-200 py-6 px-4">
-        <div className="max-w-6xl mx-auto text-center text-slate-400 text-xs">
-          © 2024 HR Events Pro Tool • Designed for modern workplaces
+      <footer className="border-t border-white/10 py-6 px-4 bg-black/10 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto text-center text-white/60 text-xs">
+          © 2025 Annual Meeting Tool • Wish you good luck!
         </div>
       </footer>
     </div>
